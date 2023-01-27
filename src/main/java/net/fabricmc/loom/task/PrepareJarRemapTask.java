@@ -57,16 +57,14 @@ public abstract class PrepareJarRemapTask extends AbstractLoomTask {
 		// TODO can this be up-to-date when the main task is up-to date?
 		getOutputs().upToDateWhen((o) -> false);
 
-		getProject().getGradle().allprojects(project -> {
-			project.getTasks().configureEach(task -> {
-				if (task instanceof PrepareJarRemapTask otherTask) {
-					if (otherTask == this) return;
+		getProject().getTasks().configureEach(task -> {
+			if (task instanceof PrepareJarRemapTask otherTask) {
+				if (otherTask == this) return;
 
-					// Ensure that all other prepare tasks inputs have completed
-					dependsOn(otherTask.getInputs());
-					mustRunAfter(otherTask.getInputs());
-				}
-			});
+				// Ensure that all other prepare tasks inputs have completed
+				dependsOn(otherTask.getInputs());
+				mustRunAfter(otherTask.getInputs());
+			}
 		});
 	}
 

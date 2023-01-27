@@ -165,13 +165,11 @@ public abstract class RemapJarTask extends AbstractRemapJarTask {
 		dependsOn(prepareJarTask);
 		mustRunAfter(prepareJarTask);
 
-		getProject().getGradle().allprojects(project -> {
-			project.getTasks().configureEach(task -> {
-				if (task instanceof PrepareJarRemapTask otherTask) {
-					// Ensure that all remap jars run after all prepare tasks
-					mustRunAfter(otherTask);
-				}
-			});
+		getProject().getTasks().configureEach(task -> {
+			if (task instanceof PrepareJarRemapTask otherTask) {
+				// Ensure that all remap jars run after all prepare tasks
+				mustRunAfter(otherTask);
+			}
 		});
 	}
 
